@@ -1,9 +1,11 @@
-FROM node:latest
+FROM node:alpine
 
-WORKDIR /app
+WORKDIR /usr/app
 
-COPY . .
+COPY package.json .
 
 RUN npm install
+
+COPY . .
 
 CMD ["npm", "start"]
