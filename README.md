@@ -16,3 +16,6 @@ psql -d postgres -h localhost -p 5432 -U postgres
 (add this syntax to docker run ...)
 -v /home/sam/Desktop/docker-learning/single-image:/usr/app
 -v /usr/app/node_modules (do not touch the node_modules)
+
+docker build --tag node-image .
+docker run --name node-api -p 5000:5000 -d node-image -v $(pwd):/usr/app -v /sur/app/node_modules

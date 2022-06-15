@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:latest
 
 WORKDIR /usr/app
 
@@ -8,4 +8,4 @@ RUN npm install
 
 COPY . .
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]
