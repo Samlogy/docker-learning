@@ -2,9 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-async function main() {
-  // ... you will write your Prisma Client queries here
-}
+async function main() {}
 
 const dbPrisma = main()
   .then(() => console.log("connected !"))
