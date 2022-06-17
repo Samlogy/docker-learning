@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  app_api:
+    container_name: app_api
+    build:
+      context: .
+      dockerfile: ./Dockerfile.api
+    depends_on:
+      - app_database
+    command: npm run start
+    ports:
+      - '5000:5000'
+
+    restart: unless-stopped
+
+  app_database:
+    image: postgres:12
+    container_name: app_database
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - '5433:5432'  
+    environment:      
+      POSTGRES_USER: 'postgres_user'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_DB: 'accounting'
+
+    restart: unless-stopped
+
+
+volumes:
+  db_data:
+
+
+
+  

@@ -1,12 +1,18 @@
-const knex = require("knex");
+const { PrismaClient } = require("@prisma/client");
 
-module.exports = knex({
-  client: "postgres",
-  connection: {
-    host: "localhost",
-    user: "postgres_user",
-    port: 5432,
-    password: "postgres",
-    database: "accounting",
-  },
-});
+const prisma = new PrismaClient();
+
+async function main() {
+  // ... you will write your Prisma Client queries here
+}
+
+const dbPrisma = main()
+  .then(() => console.log("connected !"))
+  .catch((e) => {
+    throw e;
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
+
+module.exports = dbPrisma;

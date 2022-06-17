@@ -1,7 +1,10 @@
 const express = require("express");
 const morgan = require("morgan");
 
-const db = require("./db");
+const { PrismaClient } = require("@prisma/client");
+const dbPrisma = require("./db");
+
+const { user } = new PrismaClient();
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -17,8 +20,15 @@ app.get("/", (req, res) => {
 });
 
 app.get("/users", async (req, res) => {
-  const users = await db.select().from("User");
+  const users = await user.findMany();
   res.json(users);
 });
 
-app.listen(PORT, () => console.log(`Server on: ${PORT}`));
+const startServer = () => {
+  app.listen(PORT, () => {
+    dbPrisma;
+    console.log(`Server on: ${PORT}`);
+  });
+};
+
+startServer();
