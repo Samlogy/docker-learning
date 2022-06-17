@@ -1,8 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
 
-const db = require("./db");
-
 const PORT = process.env.PORT || 5000;
 const app = express();
 
@@ -23,11 +21,6 @@ app.get("/", (req, res) => {
       url: "https://media.gettyimages.com/photos/dillon-brooks-of-the-memphis-grizzlies-in-action-against-the-brooklyn-picture-id1293805505",
     },
   ]);
-});
-
-app.get("/users", async (req, res) => {
-  const users = await db.select().from("User");
-  res.json(users);
 });
 
 app.listen(PORT, () => console.log(`Server on: ${PORT}`));

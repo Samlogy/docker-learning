@@ -3,16 +3,16 @@ version: '3'
 services:
   app_api:
     container_name: app_api
+    stdin_open: true
     build:
       context: .
       dockerfile: ./Dockerfile.api
-    depends_on:
-      - app_database
+
     command: npm run start
     ports:
       - '5000:5000'
 
-    restart: unless-stopped
+    restart: always
 
   app_database:
     image: postgres:12

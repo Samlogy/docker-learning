@@ -7,19 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id           Int       @id @default(autoincrement())
-  businessName String
-  logo         String
-  email        String    @unique
-  fullName     String
-  address      String
-  website      String?
-  phone        String
-  noteClient   String?
-  signature    String
-  bankAccount  String
-  payments     String
-  createdAt    DateTime  @default(now())
-  editedAt     DateTime?
+model Todo {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  title       String
+  description String?
+  completed   Boolean  @default(false)
 }
