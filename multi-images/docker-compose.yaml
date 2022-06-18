@@ -8,9 +8,25 @@ services:
     volumes:
       - ./api:/app
       - ./app/node_modules
-  myblog:
-    build: ./myblog
-    container_name: myblog_c
+  client:
+    build: ./client
+    container_name: client_c
     ports:
       - '3000:3000'
     stdin_open: true
+  
+  db_c:
+    image: postgres:12
+    container_name: db_c
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - '5433:5432'  
+    environment:      
+      POSTGRES_USER: 'postgres_user'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_DB: 'postgres'
+
+
+volumes:
+  db_data:
