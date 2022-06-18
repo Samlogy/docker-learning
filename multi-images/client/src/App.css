@@ -1,0 +1,32 @@
+.App {
+  text-align: center;
+  background-color: #282c34;
+  min-height: 100vh;
+  color: #fff
+}
+.todo {
+  border: 1px solid gray;
+  padding: .5rem 0;
+}
+.todo p {
+  margin: 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+input, button {
+  padding: .5rem;
+  margin-bottom: .5rem;
+  border-radius: .5rem;
+  width: 15rem;
+  margin: 1rem auto;
+}
+
+div.box {
+  border: 1px solid gray;
+  border-radius: .5rem;
+  margin: 1rem auto;
+  width: 50vw;
+}
