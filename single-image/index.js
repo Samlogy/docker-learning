@@ -1,10 +1,11 @@
 const express = require("express");
 const morgan = require("morgan");
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient, Prisma } = require("@prisma/client");
+const dbPrisma = require("./db");
 
 const PORT = process.env.PORT || 5000;
 const app = express();
-const prisma = new PrismaClient();
+const client = new PrismaClient();
 
 app.use(morgan("dev"));
 app.use(express.json());
@@ -19,10 +20,37 @@ app.get("/", (req, res) => {
 
 app.get("/todos", async (req, res) => {
   try {
-    const users = await prisma.todo.findMany();
+    const users = await client.todo.findMany();
     return res.json({
       success: true,
       data: users,
+    });
+  } catch (err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError) {
+      // The .code property can be accessed in a type-safe manner
+      if (err.code === "P2002") {
+        console.log(
+          "There is a unique constraint violation, a new user cannot be created with this email"
+        );
+        return res.status(500).json({
+          success: false,
+          message:
+            "There is a unique constraint violation, a new user cannot be created with this email",
+        });
+      }
+    }
+    throw err;
+  }
+});
+
+app.post("/todos", async (req, res) => {
+  try {
+    const newTodo = await client.todo.create({
+      data: req.body,
+    });
+    return res.json({
+      success: true,
+      data: newTodo,
     });
   } catch (err) {
     return res.json({
@@ -32,26 +60,9 @@ app.get("/todos", async (req, res) => {
   }
 });
 
-app.post("/todos", async (req, res) => {
-  try {
-    const { title, description, completed } = req.body;
-    const newTodo = await prisma.todo.create({
-      data: req.body,
-    });
-    return res.json({
-      success: true,
-      data: newTodo,
-    });
-  } catch (error) {
-    return res.json({
-      success: false,
-      message: error,
-    });
-  }
-});
-
 const startServer = () => {
   app.listen(PORT, async () => {
+    dbPrisma;
     console.log(`Server on: ${PORT}`);
   });
 };
