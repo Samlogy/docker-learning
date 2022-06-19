@@ -4,14 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -L app.js"
+    "dev": "nodemon -L app.js ",
+    "dev:build": "docker-compose up --build",
+    "dev:start": "docker-compose up",
+    "dev:down": "docker-compose down",
+    "dev:downhard": "docker-compose down -v"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^3.15.2",
     "cors": "^2.8.5",
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "redis": "^4.1.0"
   },
   "devDependencies": {
     "morgan": "^1.10.0",

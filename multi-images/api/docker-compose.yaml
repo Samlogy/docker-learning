@@ -1,32 +1,39 @@
 version: "3"
 services:
   api:
-    build: ./api
+    build: ./
     container_name: api_c
     ports:
       - '4000:4000'
+    depends_on:
+      - db
     volumes:
-      - ./api:/app
+      - api_volume:/app
       - ./app/node_modules
+    restart: always
+
   client:
-    build: ./client
+    build: ../client
     container_name: client_c
+    depends_on:
+      - api
     ports:
       - '3000:3000'
     stdin_open: true
   
   db:
-    image: postgres:12
+    image: postgres:12-alpine
     container_name: db_c
     volumes:
       - db_data:/var/lib/postgresql/data
     ports:
       - '5433:5432'  
     environment:      
-      POSTGRES_USER: 'postgres_user'
+      POSTGRES_USER: 'postgres'
       POSTGRES_PASSWORD: 'postgres'
-      POSTGRES_DB: 'postgres'
-
+      POSTGRES_DB: 'docker_learning'
+    restart: always
 
 volumes:
   db_data:
+  api_volume:
