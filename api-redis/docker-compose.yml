@@ -1,0 +1,32 @@
+version: '3'
+services:
+
+  cache_redis:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6380:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass password
+    volumes: 
+      - cache:/data
+  api_redis:
+    container_name: quotes-api
+    build:
+      context: ./
+    image: quotes-api
+    depends_on:
+      - cache_redis
+    ports:
+      - 5001:5001
+    environment:
+      REDIS_HOST: "localhost"
+      REDIS_PORT: 6379
+    links:
+      - cache_redis
+    volumes:
+      - ./:/src
+volumes:
+  db:
+    driver: local
+  cache:
+    driver: local

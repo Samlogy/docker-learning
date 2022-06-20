@@ -4,6 +4,8 @@ const morgan = require("morgan");
 const { PrismaClient, Prisma } = require("@prisma/client");
 
 const dbPrisma = require("./db");
+const redisClient = require('./cache');
+
 const app = express();
 const client = new PrismaClient();
 
@@ -12,21 +14,13 @@ app.use(morgan("dev"));
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  res.json([
-    {
-      id: "1",
-      title: "Book Review: The Name of the Wind",
-    },
-    {
-      id: "2",
-      title: "Game Review: Pokemon Brillian Diamond",
-    },
-    {
-      id: "3",
-      title: "Show Review: Alice in Borderland",
-    },
-  ]);
+app.get("/", async (req, res) => {
+  const prevCount = await redisClient.getAsync('greeting')
+  console.log(prevCount)
+  if (isNaN(prevCount)) prevCount = 0
+  const newCount = await redisClient.setAsync('greeting', prevCount + 1);
+  console.log(newCount)
+  return res.send(`Hello, visited: ${newCount}`)
 });
 
 app.get("/todos", async (req, res) => {
