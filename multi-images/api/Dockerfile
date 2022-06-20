@@ -6,24 +6,19 @@ WORKDIR /app
 
 COPY package.json ./
 
-COPY package-lock.json ./
-
 # generated prisma files
 COPY prisma ./prisma/
 
 # COPY ENV variable
 COPY .env ./
 
-RUN npm ci
+RUN npm install
 
 COPY . .
-
-
-COPY ./prisma ./prisma
 
 
 # required for docker desktop port mapping
 EXPOSE 4000
 
 #CMD ["npm", "run", "dev"]
-CMD [  "npm", "run", "dev:deploy" ]
+CMD [  "npm", "run", "dev" ]

@@ -19,6 +19,9 @@ services:
       - api
     ports:
       - '3000:3000'
+    volumes:
+      - client_volume:/app
+      - ./app/node_modules
     stdin_open: true
   
   db:
@@ -37,3 +40,4 @@ services:
 volumes:
   db_data:
   api_volume:
+  client_volume:
