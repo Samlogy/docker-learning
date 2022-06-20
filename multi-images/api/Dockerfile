@@ -4,8 +4,9 @@ RUN npm install -g nodemon
 
 WORKDIR /app
 
-COPY package.json .
-# COPY package-*.json .
+COPY package.json ./
+
+COPY package-lock.json ./
 
 # generated prisma files
 COPY prisma ./prisma/
@@ -13,7 +14,7 @@ COPY prisma ./prisma/
 # COPY ENV variable
 COPY .env ./
 
-RUN npm install
+RUN npm ci
 
 COPY . .
 
