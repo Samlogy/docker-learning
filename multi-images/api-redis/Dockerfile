@@ -6,10 +6,14 @@ WORKDIR /app
 
 COPY package.json ./
 
+COPY prisma ./prisma/
+
+COPY .env ./
+
 RUN npm install
 
 COPY . .
 
 EXPOSE 5001
 
-CMD [  "npm", "run", "dev" ]
+CMD [  "npm", "run", "dev:deploy" ]

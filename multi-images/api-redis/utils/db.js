@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 async function main() {}
 
 const dbPrisma = main()
-  .then(() => console.log("DB Connected !"))
+  .then(() => console.log("DB Connected ✅"))
   .catch((e) => {
     throw e;
   })

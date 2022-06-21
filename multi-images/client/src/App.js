@@ -11,7 +11,7 @@ function App() {
 
   const loadTodos = async () => {
     try {
-      let res = await fetch("http://localhost:5000/todos");
+      let res = await fetch("http://localhost:5001/todos");
       res = await res.json();
       if (res.success) {
         setTodos(res.data);
@@ -25,7 +25,7 @@ function App() {
     e.preventDefault();
     console.log(todo);
     try {
-      let res = await fetch("http://localhost:5000/todos", {
+      let res = await fetch("http://localhost:5001/todos", {
         method: "POST",
         body: JSON.stringify(todo),
         headers: {

@@ -1,23 +1,19 @@
-version: "3"
+version: '3'
 services:
   api:
-    build: ./
-    container_name: api_c
-    ports:
-      - '5000:5000'
+    container_name: todo-api
+    build:
+      context: ./
     depends_on:
-      - db
       - cache
-    volumes:
-      - api_volume:/app
-    restart: always
+      - db
+    ports:
+      - 5001:5001
     links:
       - cache
-      - db
-
   client:
     build: ../client
-    container_name: client_c
+    container_name: todo-client
     depends_on:
       - api
     ports:
@@ -25,31 +21,32 @@ services:
     volumes:
       - client_volume:/app
     stdin_open: true
-  
+
   db:
     image: postgres:12-alpine
-    container_name: db_c
-    volumes:
-      - db_data:/var/lib/postgresql/data
+    container_name: todo-db
     ports:
       - '5433:5432'  
     environment:      
       POSTGRES_USER: 'postgres'
       POSTGRES_PASSWORD: 'postgres'
       POSTGRES_DB: 'docker_learning'
+    volumes:
+      - db_volume:/var/lib/postgresql/data
     restart: always
 
   cache:
     image: redis:6.2-alpine
-    container_name: cache_c
-    restart: always
+    container_name: todo-cache
     ports:
       - '6380:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass password
     volumes: 
       - cache_volume:/data
+    restart: always
 
 volumes:
-  db_data:
+  cache_volume:
+  db_volume:
   api_volume:
   client_volume:
-  cache_volume:
