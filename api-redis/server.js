@@ -13,18 +13,39 @@ app.get('/', (req, res) => {
   return res.send('Hello world');
 });
 
-app.post('/store', async (req, res) => {
-  const {key, value} = req.body
-  await redisClient.setAsync(key, JSON.stringify(value));
-  return res.send('Success');
+app.get("/cache", async (req, res) => {
+  let prevCount = await redisClient.getAsync('greeting')
+  if (prevCount === null) prevCount = 0
+  const newCount = parseInt(prevCount) + 1
+  const setted = await redisClient.setAsync('greeting', newCount);
+
+  return res.send(`Hello, visited: ${newCount}`)
 });
 
+/* {key: '', value: ""} */
+app.post('/store', async (req, res) => {
+  const {key, value} = req.body
+
+  await redisClient.setAsync(key, JSON.stringify(value));
+  return res.send({
+    success: true,
+    data: {
+      key, value
+    }
+  });
+});
+
+/* /load/key_name */
 app.get('/load/:key', async (req, res) => {
   const { key } = req.params;
   console.log(key)
   const rawData = await redisClient.getAsync(key);
   console.log(rawData)
-  return res.json(JSON.parse(rawData));
+
+  return res.send({
+    success: true,
+    data: JSON.parse(rawData)
+  });
 });
 
 const PORT = process.env.PORT || 5001;
