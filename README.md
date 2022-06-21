@@ -25,3 +25,13 @@ docker build --tag node-image .
 docker run --name node-api -p 5000:5000 -d node-image -v $(pwd):/app -v /app/node_modules
 docker-compose up (run docker compose file)
 docker-compose down
+
+
+// to launch app with docker --> dockerfile (api) run: npm run dev:deploy --> first time (create all migrations)
+// run dev --> the other times
+
+client:
+client_c 3000
+api_c 5000
+cache_c 6780
+db_c 5433

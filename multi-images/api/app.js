@@ -9,18 +9,51 @@ const redisClient = require('./cache');
 const app = express();
 const client = new PrismaClient();
 
+const PORT = 5000
+
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", async (req, res) => {
+  return res.send(`Hello, visited`)
+});
+
+app.get("/cache", async (req, res) => {
   const prevCount = await redisClient.getAsync('greeting')
   console.log(prevCount)
   if (isNaN(prevCount)) prevCount = 0
   const newCount = await redisClient.setAsync('greeting', prevCount + 1);
   console.log(newCount)
+
   return res.send(`Hello, visited: ${newCount}`)
+});
+
+/* {key: '', value: ""} */
+app.post('/store', async (req, res) => {
+  const {key, value} = req.body
+
+  await redisClient.setAsync(key, JSON.stringify(value));
+  return res.send({
+    success: true,
+    data: {
+      key, value
+    }
+  });
+});
+
+/* /load/key_name */
+app.get('/load/:key', async (req, res) => {
+  const { key } = req.params;
+  console.log(key)
+  const rawData = await redisClient.getAsync(key);
+  console.log(rawData)
+
+  return res.send({
+    success: true,
+    data: JSON.parse(rawData)
+  });
 });
 
 app.get("/todos", async (req, res) => {
@@ -75,7 +108,7 @@ app.post("/todos", async (req, res) => {
   }
 });
 
-app.listen(4000, () => {
+app.listen(PORT, () => {
   dbPrisma;
-  console.log("listening for requests on port 4000");
+  console.log(`listening on: ${PORT}`);
 });
