@@ -26,7 +26,6 @@ docker run --name node-api -p 5000:5000 -d node-image -v $(pwd):/app -v /app/nod
 docker-compose up (run docker compose file)
 docker-compose down
 
-
 // to launch app with docker --> dockerfile (api) run: npm run dev:deploy --> first time (create all migrations)
 // run dev --> the other times
 
@@ -35,3 +34,8 @@ client_c 3000
 api_c 5000
 cache_c 6780
 db_c 5433
+
+docker logs conainer_id (check all the logs inside for a certain container - debug containers)
+docker inspect container_id or container_tag (check all the details for a certain container)
+
+push / pull docker images to the hub
